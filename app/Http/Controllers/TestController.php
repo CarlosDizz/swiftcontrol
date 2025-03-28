@@ -8,7 +8,7 @@ class TestController extends Controller
 {
     public function hello()
     {
-        return response()->json(['message' => '¡Hola desde Laravel en Docker!']);
+        return response()->json(['message' => '¡Dockerizado!']);
     }
 
 }
