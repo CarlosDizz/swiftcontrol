@@ -8,7 +8,7 @@ class TestController extends Controller
 {
     public function hello()
     {
-        return response()->json(['message' => '¡Dockerizado!']);
+        return response()->json(['message' => '¡Dockerizado 2!']);
     }
 
 }
