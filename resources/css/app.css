@@ -1,0 +1,6 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+.filament-brand-logo {
+    height: 48px !important;
+}

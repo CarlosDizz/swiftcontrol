@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true; // o lógica tipo $this->role->name === 'organizer'
+    }
 }
