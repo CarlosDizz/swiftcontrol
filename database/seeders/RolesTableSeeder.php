@@ -9,11 +9,11 @@ class RolesTableSeeder extends Seeder
 {
     public function run(): void
     {
-        Role::insert([
-            ['name' => 'user'],
-            ['name' => 'organizer'],
-            ['name' => 'ticket_checker'],
-        ]);
+        $roles = ['user', 'organizer', 'ticket_checker'];
+
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
+        }
     }
 }
 
