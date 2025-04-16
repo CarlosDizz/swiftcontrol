@@ -5,16 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -44,6 +35,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/ping', function () {
-    return response()->json(['pong' => "Probando despliegues desde mack"]);
+    return response()->json(['pong' => "Probando despliegues desde mac"]);
+});
+
+
+
+
+Route::middleware(['auth:sanctum', 'role:organizer'])->get('/organizer-area', function (Request $request) {
+    return response()->json([
+        'user' => $request->user(),
+        'role' => $request->user()->role->name,
+    ]);
 });
 
