@@ -33,7 +33,7 @@ Route::post('/login', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'Incorrect login'], 401);
     }
 
     return response()->json(['token' => $user->createToken('API Token')->plainTextToken]);
