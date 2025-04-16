@@ -24,6 +24,7 @@ Route::post('/register', function (Request $request) {
         'name' => $request->name,
         'email' => $request->email,
         'password' => Hash::make($request->password),
+        'role_id' => '1'
     ]);
 
     return response()->json(['token' => $user->createToken('API Token')->plainTextToken]);
