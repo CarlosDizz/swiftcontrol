@@ -38,6 +38,13 @@ Route::get('/ping', function () {
     return response()->json(['pong' => "Probando despliegues desde mac"]);
 });
 
+use App\Http\Controllers\Api\EventController;
+
+Route::middleware('auth:sanctum')->prefix('events')->group(function () {
+    Route::get('/', [EventController::class, 'index']);
+    Route::get('{event}', [EventController::class, 'show']);
+});
+
 
 
 
