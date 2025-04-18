@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\MediaFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 
 
@@ -52,6 +55,19 @@ Route::middleware(['auth:sanctum', 'role:organizer'])->get('/organizer-area', fu
     return response()->json([
         'user' => $request->user(),
         'role' => $request->user()->role->name,
+    ]);
+});
+
+Route::middleware('auth:sanctum')->get('/media/{id}', function (string $id) {
+    $file = MediaFile::findOrFail($id);
+
+    if (!Storage::exists($file->path)) {
+        abort(404);
+    }
+
+    return Response::make(Storage::get($file->path), 200, [
+        'Content-Type' => $file->mime_type,
+        'Content-Disposition' => 'inline; filename="'.$file->filename.'"',
     ]);
 });
 

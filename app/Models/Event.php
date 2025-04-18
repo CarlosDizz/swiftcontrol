@@ -14,6 +14,7 @@ class Event extends Model
         'date',
         'capacity',
         'info',
+        'poster_file_id'
     ];
 
     protected $casts = [
@@ -25,6 +26,14 @@ class Event extends Model
     {
         return $this->hasMany(\App\Models\PriceRange::class);
     }
+
+
+
+    public function poster()
+    {
+        return $this->belongsTo(MediaFile::class, 'poster_file_id');
+    }
+
 
 }
 

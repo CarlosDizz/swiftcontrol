@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource\RelationManagers;
 use App\Models\Event;
+use App\Models\MediaFile;
+use Faker\Core\Uuid;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,6 +22,14 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\HasManyRepeater;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Str;
+use App\Models\MediaFile as Media;
+use Filament\Forms\Components\ViewField;
+
+use Filament\Forms\Components\View;
+
+
 
 class EventResource extends Resource
 {
@@ -59,6 +69,7 @@ class EventResource extends Resource
                                 ->label('Fecha del evento')
                                 ->required(),
                         ]),
+
 
                         TextInput::make('capacity')
                             ->label('Aforo máximo')
