@@ -20,9 +20,12 @@ class MediaFile extends Model
     protected static function booted(): void
     {
         static::creating(function ($model) {
-            $model->id = (string) Str::uuid();
+            if (! $model->id) {
+                $model->id = (string) Str::uuid();
+            }
         });
     }
+
 
     public function getUrlAttribute(): string
     {
@@ -46,4 +49,21 @@ class MediaFile extends Model
             return $uuid;
 
     }
+
+    public static function storeFromContent(string $content, string $filename, ?string $id = null): self
+    {
+
+        $path = "media/{$filename}";
+
+        Storage::disk('local')->put($path, $content);
+
+        return self::create([
+            'id' => $id,
+            'path' => $path,
+            'filename' => $filename,
+            'mime_type' => 'image/svg+xml',
+            'size' => strlen($content),
+        ]);
+    }
+
 }

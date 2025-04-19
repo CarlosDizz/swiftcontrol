@@ -71,3 +71,13 @@ Route::middleware('auth:sanctum')->get('/media/{id}', function (string $id) {
     ]);
 });
 
+
+use App\Http\Controllers\TicketController;
+
+Route::middleware('auth:sanctum')->get('/tickets', [TicketController::class, 'index']);
+
+Route::middleware(['auth:sanctum'])->post('/tickets/check', [TicketController::class, 'checkTicket']);
+
+Route::middleware('auth:sanctum')->post('/tickets/transfer', [TicketController::class, 'transferTicket']);
+
+
