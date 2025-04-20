@@ -120,6 +120,51 @@ class TicketController extends Controller
         ]);
     }
 
+    public function recoverTicket(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|uuid',
+        ]);
+
+        $user = auth()->user();
+
+        $ticket = Ticket::where('token', $request->token)
+            ->where('buyer_id', $user->id)
+            ->whereNull('owner_id')
+            ->first();
+
+        if (! $ticket) {
+            return response()->json(['message' => 'No tienes permiso para recuperar esta entrada.'], 403);
+        }
+
+
+        $data = json_decode($ticket->data, true) ?? [];
+
+        if (isset($data['checkin'])) {
+            return response()->json(['message' => 'La entrada ya ha sido utilizada y no puede ser recuperada.'], 400);
+        }
+
+
+        $ticket->owner_email = null;
+        $ticket->transferred_at = null;
+        $ticket->revoked_at = now();
+
+
+        $data['revoked'] = [
+            'by_user_id' => $user->id,
+            'at' => now()->toDateTimeString(),
+        ];
+        $ticket->data = $data;
+
+        $ticket->save();
+
+        return response()->json([
+            'message' => 'Entrada recuperada correctamente.',
+            'ticket' => $ticket,
+        ]);
+    }
+
+
 
 
 }

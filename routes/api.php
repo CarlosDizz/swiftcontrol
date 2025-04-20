@@ -80,4 +80,7 @@ Route::middleware(['auth:sanctum'])->post('/tickets/check', [TicketController::c
 
 Route::middleware('auth:sanctum')->post('/tickets/transfer', [TicketController::class, 'transferTicket']);
 
+Route::middleware('auth:sanctum')->post('/tickets/recover', [TicketController::class, 'recoverTicket']);
+
+
 
