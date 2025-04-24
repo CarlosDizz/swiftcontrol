@@ -21,6 +21,7 @@ class Ticket extends Model
 
     protected $casts = [
         'used_at' => 'datetime',
+        'data' => 'array',
     ];
 
     protected static function booted()
