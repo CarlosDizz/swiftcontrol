@@ -162,6 +162,7 @@ class TicketResource extends Resource
                 }
             }
         }
+        $lines[] = "-Hola";
 
         return implode("\n", $lines);
     }
