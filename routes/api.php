@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\MediaFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
+
 
 
 
@@ -81,6 +84,16 @@ Route::middleware(['auth:sanctum'])->post('/tickets/check', [TicketController::c
 Route::middleware('auth:sanctum')->post('/tickets/transfer', [TicketController::class, 'transferTicket']);
 
 Route::middleware('auth:sanctum')->post('/tickets/recover', [TicketController::class, 'recoverTicket']);
+
+
+
+Route::middleware('auth:sanctum')->post('/orders/create', [OrderController::class, 'create']);
+
+
+Route::middleware('auth:sanctum')->post('/payments/confirm', [PaymentController::class, 'confirm']);
+
+Route::middleware('auth:sanctum')->get('/orders/mine', [OrderController::class, 'mine']);
+
 
 
 
