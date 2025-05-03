@@ -26,6 +26,8 @@ COPY . .
 # Dar permisos a storage y bootstrap/cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+RUN npm run build
+
 # Exponer el puerto para PHP-FPM
 EXPOSE 9000
 
