@@ -12,68 +12,84 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Placeholder;
 
 class ShopOrderResource extends Resource
 {
     protected static ?string $model = ShopOrder::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\TextInput::make('total_amount')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                Forms\Components\DateTimePicker::make('paid_at'),
+                Placeholder::make('comprador')
+                    ->label('Comprador')
+                    ->content(fn ($record) => $record->user->name ?? '—'),
+                Select::make('status')
+                    ->label('Estado del pedido')
+                    ->options([
+                        'pending' => 'Pendiente',
+                        'paid' => 'Pagado',
+                        'cancelled' => 'Cancelado',
+                    ])
+                    ->disabled(),
+                TextInput::make('total_amount')
+                    ->label('Importe total')
+                    ->disabled(),
+
+                DateTimePicker::make('paid_at')
+                    ->label('Pagado el')
+                    ->disabled(),
+
+                Section::make('Items del pedido')
+                    ->schema([
+                        Placeholder::make('items_table')
+                            ->content(fn ($record) => view('filament.components.order-items', ['items' => $record->items]))
+                    ]),
+
+                Section::make('Pago')
+                    ->schema([
+                        Placeholder::make('metodo_pago')
+                            ->label('Método de pago')
+                            ->content(fn ($record) => $record->payment->paymentType->name ?? '—'),
+
+                        Placeholder::make('estado_pago')
+                            ->label('Estado del pago')
+                            ->content(fn ($record) => $record->payment->status ?? '—'),
+
+                        Placeholder::make('transaction_id')
+                            ->label('Transacción')
+                            ->content(fn ($record) => $record->payment->transaction_id ?? '—'),
+                    ])
+
+
             ]);
     }
+
+
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('total_amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('paid_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('user.name')->label('Comprador'),
+                Tables\Columns\TextColumn::make('status')->badge(),
+                Tables\Columns\TextColumn::make('total_amount')->money('EUR')->label('Importe total'),
+                Tables\Columns\TextColumn::make('paid_at')->label('Pagado el'),
+                Tables\Columns\TextColumn::make('created_at')->label('Creado'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]); // sin acciones masivas
     }
+
 
     public static function getRelations(): array
     {
@@ -86,8 +102,18 @@ class ShopOrderResource extends Resource
     {
         return [
             'index' => Pages\ListShopOrders::route('/'),
-            'create' => Pages\CreateShopOrder::route('/create'),
-            'edit' => Pages\EditShopOrder::route('/{record}/edit'),
+            'view' => Pages\ViewShopOrder::route('/{record}'),
         ];
     }
+    public static function getModelLabel(): string
+    {
+        return 'Pedido';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Pedidos';
+    }
+
+
 }

@@ -1,7 +1,7 @@
 module.exports = {
     content: [
-        './resources/**/*.blade.php',
-        './resources/**/*.js',
+        './resources/views/**/*.blade.php',
+        './resources/css/filament/admin/theme.css',
         './vendor/filament/**/*.blade.php',
     ],
     theme: {
