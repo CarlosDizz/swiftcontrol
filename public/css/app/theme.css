@@ -128,14 +128,18 @@ body, .fi-body {
     color: #3045c7 !important;
 }
 
-/* Icono del ítem activo */
-.fi-sidebar-item.fi-active .fi-sidebar-item-icon {
-    color: #3045c7 !important;
-    stroke: #3045c7 !important;
+
+.fi-logo img {
+    height: auto !important;
+    max-height: 180px !important;
+    width: auto;
+    object-fit: contain;
 }
 
-.filament-brand .h-10 {
-    height: auto !important;
-    max-height: 60px !important; /* ajusta a tu gusto */
+.fi-logo {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    min-height: 64px;
 }
 
