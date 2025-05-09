@@ -39,8 +39,7 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\TicketSalesChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
