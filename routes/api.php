@@ -94,6 +94,7 @@ Route::middleware('auth:sanctum')->post('/payments/confirm', [PaymentController:
 
 Route::middleware('auth:sanctum')->get('/orders/mine', [OrderController::class, 'mine']);
 
+Route::middleware('auth:sanctum')->put('/user', [\App\Http\Controllers\UserController::class, 'update']);
 
 
 
